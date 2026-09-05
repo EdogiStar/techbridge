@@ -23,3 +23,11 @@ TechBridge is a modern landing page for a practical technology learning and inte
 
 ## 🎯 Purpose
 Built to present TechBridge's practical learning and internship opportunities through a clean, professional, and responsive web experience.
+
+## Screenshots
+
+### Desktop
+![TechBridge Desktop](./screenshots/desktop.png)
+
+### Mobile
+![TechBridge Mobile](./screenshots/mobile.png)
