@@ -29,5 +29,10 @@ Built to present TechBridge's practical learning and internship opportunities th
 ### Desktop
 ![TechBridge Desktop](./screenshots/desktop.png)
 
+![TechBridge Desktop Task Experience](./screenshots/task-experience.png)
+
 ### Mobile
 ![TechBridge Mobile](./screenshots/mobile.png)
+
+### Developer Note
+I presented the eight tasks as a simple vertical journey to make the 30-day progression easy to follow. I chose this layout for clarity and consistency with the existing TechBridge platform. I learned more about structuring responsive experiences with HTML5 and CSS3. The main challenge was maintaining consistency across different screen sizes.
