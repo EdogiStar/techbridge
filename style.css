@@ -2450,3 +2450,248 @@ h2 span {
 
 }
 
+
+/* ==================== INTERNSHIP ROADMAP ==================== */
+
+.roadmap-section {
+  background: var(--surface, #f6faf9);
+}
+
+.track-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.track-button {
+  padding: 14px 24px;
+  border: 1px solid rgba(7, 26, 43, 0.15);
+  border-radius: 999px;
+  background: transparent;
+  color: #071a2b;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.track-button:hover {
+  transform: translateY(-2px);
+  border-color: #22c7b5;
+}
+
+.track-button.active {
+  background: #071a2b;
+  color: #ffffff;
+  border-color: #071a2b;
+}
+
+.selected-track {
+  margin-bottom: 48px;
+  padding: 28px;
+  border-left: 4px solid #22c7b5;
+  background: #ffffff;
+  border-radius: 0 14px 14px 0;
+}
+
+.selected-track p {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.selected-track h3 {
+  margin: 0;
+  color: #071a2b;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+
+/* ==================== DAY TIMELINE ==================== */
+
+.roadmap-progress {
+  margin-bottom: 56px;
+}
+
+.day-timeline {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+  margin-top: 24px;
+}
+
+.day-timeline span {
+  position: relative;
+  padding: 14px 8px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #071a2b;
+  border-top: 2px solid #22c7b5;
+}
+
+.day-timeline span::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c7b5;
+  transform: translateX(-50%);
+}
+
+
+/* ==================== ROADMAP TASKS ==================== */
+
+.roadmap-task-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.roadmap-task-card {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 28px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid rgba(7, 26, 43, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(7, 26, 43, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.roadmap-task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(7, 26, 43, 0.1);
+}
+
+.roadmap-task-number {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 4px;
+  color: #22c7b5;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.roadmap-task-content {
+  min-width: 0;
+}
+
+.roadmap-task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.roadmap-task-meta span {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eefaf8;
+  color: #071a2b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.roadmap-task-content h3 {
+  margin: 0 0 10px;
+  color: #071a2b;
+  font-size: 1.35rem;
+}
+
+.roadmap-task-content p {
+  max-width: 760px;
+  margin: 0;
+  line-height: 1.7;
+  color: rgba(7, 26, 43, 0.7);
+}
+
+
+/* ==================== ROADMAP MOBILE ==================== */
+
+@media (max-width: 768px) {
+    
+    .roadmap-task-list {
+    grid-template-columns: 1fr;
+  }
+
+  .track-selector {
+    flex-direction: column;
+  }
+
+  .track-button {
+    width: 100%;
+  }
+
+  .selected-track {
+    margin-bottom: 40px;
+    padding: 22px;
+  }
+
+  .day-timeline {
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 18px;
+  }
+
+  .day-timeline span {
+    border-top: 0;
+    border-left: 2px solid #22c7b5;
+    text-align: left;
+    padding: 8px 8px 8px 14px;
+  }
+
+  .day-timeline span::before {
+    top: 50%;
+    left: -7px;
+    transform: translateY(-50%);
+  }
+
+  .roadmap-task-card {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 22px;
+  }
+
+  .roadmap-task-number {
+    justify-content: flex-start;
+    padding-top: 0;
+  }
+
+  .roadmap-task-content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .day-timeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .roadmap-task-card {
+    padding: 20px;
+  }
+
+  .roadmap-task-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

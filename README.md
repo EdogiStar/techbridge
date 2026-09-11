@@ -24,6 +24,17 @@ TechBridge is a modern landing page for a practical technology learning and inte
 ## 🎯 Purpose
 Built to present TechBridge's practical learning and internship opportunities through a clean, professional, and responsive web experience.
 
+## Task 4 — Interactive Internship Roadmap
+
+An interactive 30-day internship roadmap for the TechBridge Data Analytics and Web Development tracks.
+
+Features
+
+- Switch between both internship tracks without page refresh.
+- Displays all 8 tasks with day, description, and difficulty.
+- Responsive roadmap layout for desktop, tablet, and mobile.
+- Built with HTML5, CSS3, and JavaScript.
+
 ## Screenshots
 
 ### Desktop
@@ -33,6 +44,11 @@ Built to present TechBridge's practical learning and internship opportunities th
 
 ### Mobile
 ![TechBridge Mobile](./screenshots/mobile.png)
+
+### Roadmaps 
+![Data Analytics](.screenshots/roadmap-data-analytics.png)
+
+![Web Development](.screenshots/roadmap-web-development.png)
 
 ### Developer Note
 I presented the eight tasks as a simple vertical journey to make the 30-day progression easy to follow. I chose this layout for clarity and consistency with the existing TechBridge platform. I learned more about structuring responsive experiences with HTML5 and CSS3. The main challenge was maintaining consistency across different screen sizes.
