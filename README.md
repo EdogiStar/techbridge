@@ -46,9 +46,9 @@ Features
 ![TechBridge Mobile](./screenshots/mobile.png)
 
 ### Roadmaps 
-![Data Analytics](.screenshots/roadmap-data-analytics.png)
+![Data Analytics](./screenshots/roadmap-data-analytics.png)
 
-![Web Development](.screenshots/roadmap-web-development.png)
+![Web Development](./screenshots/roadmap-web-development.png)
 
 ### Developer Note
 I presented the eight tasks as a simple vertical journey to make the 30-day progression easy to follow. I chose this layout for clarity and consistency with the existing TechBridge platform. I learned more about structuring responsive experiences with HTML5 and CSS3. The main challenge was maintaining consistency across different screen sizes.
