@@ -1,0 +1,25 @@
+{
+  "name": "techbridge",
+  "version": "1.0.0",
+  "description": "TechBridge is a modern landing page for a practical technology learning and internship platform focused on helping beginners gain real-world experience through hands-on learning.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"**/*.{html,css}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EdogiStar/techbridge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/EdogiStar/techbridge/issues"
+  },
+  "homepage": "https://github.com/EdogiStar/techbridge#readme",
+  "devDependencies": {
+    "prettier": "^3.9.6"
+  }
+}

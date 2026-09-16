@@ -305,3 +305,441 @@ trackButtons.forEach((button) => {
 // ==================== INITIAL TRACK ====================
 
 displayTrack("webDevelopment");
+
+
+/* =========================================
+   TASK 5 — CHALLENGE HUB
+========================================= */
+
+const challenges = [
+  {
+    id: 1,
+    title: "Sales Performance Analysis",
+    track: "data-analytics",
+    trackName: "Data Analytics",
+    difficulty: "beginner",
+    difficultyName: "Beginner",
+    description:
+      "Analyze a small sales dataset to identify trends, top-performing products, and monthly performance.",
+    outcome:
+      "A clear analysis showing key sales trends and business insights.",
+    objective:
+      "Use basic data cleaning and analysis techniques to understand sales performance.",
+    skills: "Data cleaning, data analysis, and basic data visualization.",
+    tools: "Excel, Google Sheets, or Python.",
+    deliverable:
+      "A cleaned dataset with a summary of important findings and visualizations.",
+    time: "2–3 days",
+  },
+
+  {
+    id: 2,
+    title: "Customer Insights Analysis",
+    track: "data-analytics",
+    trackName: "Data Analytics",
+    difficulty: "beginner",
+    difficultyName: "Beginner",
+    description:
+      "Explore customer data to identify customer patterns, preferences, and useful business insights.",
+    outcome:
+      "A short customer insights report supported by simple charts.",
+    objective:
+      "Understand customer behaviour by organizing and analyzing customer information.",
+    skills: "Data exploration, filtering, grouping, and visualization.",
+    tools: "Excel, Google Sheets, or Power BI.",
+    deliverable:
+      "A customer analysis report containing key findings and visualizations.",
+    time: "2–3 days",
+  },
+
+  {
+    id: 3,
+    title: "Business Performance Dashboard",
+    track: "data-analytics",
+    trackName: "Data Analytics",
+    difficulty: "intermediate",
+    difficultyName: "Intermediate",
+    description:
+      "Build a simple dashboard that presents important business performance metrics.",
+    outcome:
+      "An interactive dashboard that makes business performance easier to understand.",
+    objective:
+      "Transform raw business data into useful visual information for decision-making.",
+    skills: "Data visualization, dashboard design, and basic analysis.",
+    tools: "Power BI, Excel, or Tableau.",
+    deliverable:
+      "A dashboard displaying key metrics, charts, and business insights.",
+    time: "3–5 days",
+  },
+
+  {
+    id: 4,
+    title: "Responsive Landing Page",
+    track: "web-development",
+    trackName: "Web Development",
+    difficulty: "beginner",
+    difficultyName: "Beginner",
+    description:
+      "Create a responsive landing page for a fictional product, service, or organization.",
+    outcome:
+      "A clean landing page that works across desktop, tablet, and mobile screens.",
+    objective:
+      "Practice creating structured and responsive web interfaces.",
+    skills: "HTML5, CSS3, responsive design, and basic JavaScript.",
+    tools: "HTML, CSS, JavaScript, and Git.",
+    deliverable:
+      "A responsive landing page with navigation, sections, calls-to-action, and a footer.",
+    time: "2–3 days",
+  },
+
+  {
+    id: 5,
+    title: "Personal Portfolio Website",
+    track: "web-development",
+    trackName: "Web Development",
+    difficulty: "intermediate",
+    difficultyName: "Intermediate",
+    description:
+      "Build a professional portfolio website that showcases a developer's skills and projects.",
+    outcome:
+      "A responsive portfolio that can be shared with employers or clients.",
+    objective:
+      "Create a professional online presence using modern frontend development practices.",
+    skills: "HTML, CSS, JavaScript, responsive design, and UI structure.",
+    tools: "HTML, CSS, JavaScript, Git, and GitHub.",
+    deliverable:
+      "A multi-section portfolio containing an introduction, skills, projects, and contact section.",
+    time: "3–5 days",
+  },
+
+  {
+    id: 6,
+    title: "Interactive Product Page",
+    track: "web-development",
+    trackName: "Web Development",
+    difficulty: "intermediate",
+    difficultyName: "Intermediate",
+    description:
+      "Create a product page with interactive elements that allow users to explore product information.",
+    outcome:
+      "A responsive product page with useful user interactions.",
+    objective:
+      "Practice combining HTML, CSS, and JavaScript to create an interactive web experience.",
+    skills:
+      "DOM manipulation, event handling, responsive design, and UI development.",
+    tools: "HTML, CSS, JavaScript, and Git.",
+    deliverable:
+      "A product page with interactive buttons, product information, and responsive layouts.",
+    time: "3–4 days",
+  },
+];
+
+
+/* ==================== CHALLENGE ELEMENTS ==================== */
+
+const challengeGrid = document.getElementById("challengeGrid");
+const challengeCount = document.getElementById("challengeCount");
+const noResults = document.getElementById("noResults");
+
+const trackFilterButtons = document.querySelectorAll(
+  "#trackFilters .filter-btn"
+);
+
+const difficultyFilterButtons = document.querySelectorAll(
+  "#difficultyFilters .filter-btn"
+);
+
+const challengeSearch = document.getElementById("challengeSearch");
+const resetFilters = document.getElementById("resetFilters");
+
+const challengeModal = document.getElementById("challengeModal");
+const modalBody = document.getElementById("modalBody");
+const modalClose = document.getElementById("modalClose");
+const modalOverlay = document.getElementById("modalOverlay");
+
+
+/* ==================== CHALLENGE FILTER STATE ==================== */
+
+/*
+  These names are intentionally different from
+  the Roadmap's selectedTrack variable.
+*/
+
+let challengeTrack = "all";
+let challengeDifficulty = "all";
+
+
+/* ==================== RENDER CHALLENGES ==================== */
+
+function renderChallenges(list) {
+  if (!challengeGrid) return;
+
+  challengeGrid.innerHTML = "";
+
+  if (challengeCount) {
+    challengeCount.textContent = list.length;
+  }
+
+  if (list.length === 0) {
+    if (noResults) {
+      noResults.hidden = false;
+    }
+
+    return;
+  }
+
+  if (noResults) {
+    noResults.hidden = true;
+  }
+
+  list.forEach((challenge) => {
+    const card = document.createElement("article");
+
+    card.className = "challenge-card";
+
+    card.innerHTML = `
+      <div class="challenge-card-top">
+
+        <span class="challenge-track">
+          ${challenge.trackName}
+        </span>
+
+        <span class="challenge-difficulty ${challenge.difficulty}">
+          ${challenge.difficultyName}
+        </span>
+
+      </div>
+
+      <h2>${challenge.title}</h2>
+
+      <p class="challenge-description">
+        ${challenge.description}
+      </p>
+
+      <div class="challenge-outcome">
+
+        <strong>Expected Outcome</strong>
+
+        <p>${challenge.outcome}</p>
+
+      </div>
+
+      <button
+        class="view-challenge-btn"
+        data-id="${challenge.id}"
+        type="button"
+      >
+        View Challenge
+      </button>
+    `;
+
+    challengeGrid.appendChild(card);
+  });
+}
+
+
+/* ==================== APPLY FILTERS ==================== */
+
+function applyChallengeFilters() {
+  const searchTerm = challengeSearch
+    ? challengeSearch.value.trim().toLowerCase()
+    : "";
+
+  const filteredChallenges = challenges.filter((challenge) => {
+
+    const trackMatches =
+      challengeTrack === "all" ||
+      challenge.track === challengeTrack;
+
+    const difficultyMatches =
+      challengeDifficulty === "all" ||
+      challenge.difficulty === challengeDifficulty;
+
+    const searchMatches =
+      challenge.title.toLowerCase().includes(searchTerm) ||
+      challenge.description.toLowerCase().includes(searchTerm) ||
+      challenge.trackName.toLowerCase().includes(searchTerm);
+
+    return (
+      trackMatches &&
+      difficultyMatches &&
+      searchMatches
+    );
+  });
+
+  renderChallenges(filteredChallenges);
+}
+
+
+/* ==================== TRACK FILTER ==================== */
+
+trackFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+
+    trackFilterButtons.forEach((btn) => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    challengeTrack = button.dataset.track;
+
+    applyChallengeFilters();
+  });
+});
+
+
+/* ==================== DIFFICULTY FILTER ==================== */
+
+difficultyFilterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+
+    difficultyFilterButtons.forEach((btn) => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    challengeDifficulty = button.dataset.difficulty;
+
+    applyChallengeFilters();
+  });
+});
+
+
+/* ==================== SEARCH ==================== */
+
+if (challengeSearch) {
+  challengeSearch.addEventListener(
+    "input",
+    applyChallengeFilters
+  );
+}
+
+
+/* ==================== RESET FILTERS ==================== */
+
+if (resetFilters) {
+  resetFilters.addEventListener("click", () => {
+
+    challengeTrack = "all";
+    challengeDifficulty = "all";
+
+    if (challengeSearch) {
+      challengeSearch.value = "";
+    }
+
+    trackFilterButtons.forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.track === "all"
+      );
+    });
+
+    difficultyFilterButtons.forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.difficulty === "all"
+      );
+    });
+
+    applyChallengeFilters();
+  });
+}
+
+
+/* ==================== CHALLENGE DETAILS MODAL ==================== */
+
+function openChallengeModal(challengeId) {
+  const challenge = challenges.find(
+    (item) => item.id === challengeId
+  );
+
+  if (!challenge || !challengeModal || !modalBody) {
+    return;
+  }
+
+  modalBody.innerHTML = `
+    <span class="challenge-track">
+      ${challenge.trackName}
+    </span>
+
+    <h2>${challenge.title}</h2>
+
+    <span class="challenge-difficulty ${challenge.difficulty}">
+      ${challenge.difficultyName}
+    </span>
+
+    <h3>Objective</h3>
+    <p>${challenge.objective}</p>
+
+    <h3>Skills Required</h3>
+    <p>${challenge.skills}</p>
+
+    <h3>Tools</h3>
+    <p>${challenge.tools}</p>
+
+    <h3>What You Need to Produce</h3>
+    <p>${challenge.deliverable}</p>
+
+    <h3>Expected Result</h3>
+    <p>${challenge.outcome}</p>
+
+    <h3>Estimated Time</h3>
+    <p>${challenge.time}</p>
+  `;
+
+  challengeModal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+
+function closeChallengeModal() {
+  if (!challengeModal) return;
+
+  challengeModal.hidden = true;
+  document.body.style.overflow = "";
+}
+
+
+/* ==================== VIEW CHALLENGE ==================== */
+
+if (challengeGrid) {
+  challengeGrid.addEventListener("click", (event) => {
+
+    const button = event.target.closest(
+      ".view-challenge-btn"
+    );
+
+    if (!button) return;
+
+    const challengeId = Number(button.dataset.id);
+
+    openChallengeModal(challengeId);
+  });
+}
+
+
+/* ==================== CLOSE MODAL ==================== */
+
+if (modalClose) {
+  modalClose.addEventListener(
+    "click",
+    closeChallengeModal
+  );
+}
+
+
+if (modalOverlay) {
+  modalOverlay.addEventListener(
+    "click",
+    closeChallengeModal
+  );
+}
+
+
+/* ==================== INITIAL CHALLENGES ==================== */
+
+if (challengeGrid) {
+  renderChallenges(challenges);
+}
