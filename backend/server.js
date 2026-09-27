@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const tasksFilePath = path.join(
   __dirname,
@@ -85,7 +85,7 @@ app.put("/api/tasks/:id", (req, res) => {
   res.json(task);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(
     `TechBridge API running at http://localhost:${PORT}`
   );
