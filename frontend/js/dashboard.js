@@ -1,77 +1,7 @@
-const tasks = [
-  {
-    id: 1,
-    title: "TechBridge Landing Page",
-    description:
-      "Build a responsive landing page for the TechBridge internship platform.",
-    status: "completed",
-    details:
-      "Create a responsive TechBridge landing page using HTML5 and CSS3. Focus on clear structure, responsive layouts and a consistent visual style."
-  },
-  {
-    id: 2,
-    title: "TechBridge Programs",
-    description:
-      "Create a programs page that presents the available TechBridge programs.",
-    status: "completed",
-    details:
-      "Create a programs page that presents the available TechBridge programs and their key information."
-  },
-  {
-    id: 3,
-    title: "Internship Tasks Experience",
-    description:
-      "Present the 30-day internship journey and the eight internship tasks.",
-    status: "completed",
-    details:
-      "Present the 30-day internship experience and the eight tasks in a clear and easy-to-follow journey."
-  },
-  {
-    id: 4,
-    title: "Interactive Internship Task Tracker",
-    description:
-      "Build an interactive roadmap for the Data Analytics and Web Development tracks.",
-    status: "completed",
-    details:
-      "Build an interactive internship roadmap that allows users to switch between the Data Analytics and Web Development tracks."
-  },
-  {
-    id: 5,
-    title: "Challenge Hub",
-    description:
-      "Build a challenge section where interns can explore and filter development challenges.",
-    status: "completed",
-    details:
-      "Build the TechBridge Challenge Hub where interns can explore and filter challenges by development track."
-  },
-  {
-    id: 6,
-    title: "Intern Dashboard",
-    description:
-      "Build an interactive dashboard for tracking internship progress and exploring technologies.",
-    status: "in-progress",
-    details:
-      "Build an interactive intern dashboard for tracking tasks, monitoring progress and exploring modern web technologies."
-  },
-  {
-    id: 7,
-    title: "Coming Soon",
-    description:
-      "Details for the next internship task will be added soon.",
-    status: "not-started",
-    details:
-      "Details for this internship task will be provided by TechBridge."
-  },
-  {
-    id: 8,
-    title: "Coming Soon",
-    description:
-      "Details for the final internship task will be added soon.",
-    status: "not-started",
-    details:
-      "Details for this internship task will be provided by TechBridge."
-  }
-];
+const API_URL = "http://localhost:3000/api/tasks";
+
+let tasks = [];
+let currentFilter = "all";
 
 const taskGrid = document.getElementById("task-grid");
 
@@ -127,9 +57,12 @@ function updateProgress() {
   const remainingTasks =
     totalTasks - completedTasks;
 
-  const progressPercentage = Math.round(
-    (completedTasks / totalTasks) * 100
-  );
+  const progressPercentage =
+    totalTasks === 0
+      ? 0
+      : Math.round(
+          (completedTasks / totalTasks) * 100
+        );
 
   completedTasksElement.textContent =
     completedTasks;
@@ -147,6 +80,17 @@ function updateProgress() {
 
 function renderTasks(taskList) {
   taskGrid.innerHTML = "";
+
+  if (taskList.length === 0) {
+    taskGrid.innerHTML = `
+      <p class="task-message">
+        No tasks found.
+      </p>
+    `;
+
+    updateProgress();
+    return;
+  }
 
   taskList.forEach((task) => {
     const taskCard =
@@ -202,30 +146,178 @@ function renderTasks(taskList) {
 }
 
 
-taskGrid.addEventListener("click", (event) => {
-  const completeButton =
-    event.target.closest(".complete-task-btn");
+function showLoading() {
+  taskGrid.innerHTML = `
+    <p class="task-message">
+      Loading tasks...
+    </p>
+  `;
+}
 
-  if (!completeButton) return;
 
-  const taskId =
-    Number(completeButton.dataset.id);
+function showError() {
+  taskGrid.innerHTML = `
+    <p class="task-message">
+      Unable to load tasks.<br>
+      Please check your connection or try again.
+    </p>
+  `;
+}
 
-  const task =
-    tasks.find((task) => task.id === taskId);
 
-  if (!task) return;
+async function loadTasks() {
+  showLoading();
 
-  task.status = "completed";
+  try {
+    const response =
+      await fetch(API_URL);
 
-  renderTasks(tasks);
-});
+    if (!response.ok) {
+      throw new Error("Failed to load tasks");
+    }
+
+    tasks = await response.json();
+
+    renderTasks(tasks);
+
+  } catch (error) {
+    console.error(error);
+    showError();
+  }
+}
+
+
+async function completeTask(taskId) {
+  try {
+    const response =
+      await fetch(`${API_URL}/${taskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          status: "completed"
+        })
+      });
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to update task"
+      );
+    }
+
+    const updatedTask =
+      await response.json();
+
+    const taskIndex =
+      tasks.findIndex(
+        (task) => task.id === taskId
+      );
+
+    if (taskIndex !== -1) {
+      tasks[taskIndex] = updatedTask;
+    }
+
+    renderTasks(
+      currentFilter === "all"
+        ? tasks
+        : tasks.filter(
+            (task) =>
+              task.status === currentFilter
+          )
+    );
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Unable to update task. Please try again."
+    );
+  }
+}
+
+
+async function viewTask(taskId) {
+  try {
+    const response =
+      await fetch(`${API_URL}/${taskId}`);
+
+    if (!response.ok) {
+      throw new Error(
+        "Failed to load task"
+      );
+    }
+
+    const task =
+      await response.json();
+
+    modalBody.innerHTML = `
+      <span class="task-number">
+        TASK ${task.id}
+      </span>
+
+      <h2>${task.title}</h2>
+
+      <p>${task.details}</p>
+
+      <span class="task-status">
+        ${formatStatus(task.status)}
+      </span>
+    `;
+
+    modal.classList.add("show");
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Unable to load task. Please try again."
+    );
+  }
+}
+
+
+taskGrid.addEventListener(
+  "click",
+  async (event) => {
+    const completeButton =
+      event.target.closest(
+        ".complete-task-btn"
+      );
+
+    if (completeButton) {
+      const taskId =
+        Number(
+          completeButton.dataset.id
+        );
+
+      await completeTask(taskId);
+      return;
+    }
+
+    const viewButton =
+      event.target.closest(
+        ".view-task-btn"
+      );
+
+    if (viewButton) {
+      const taskId =
+        Number(
+          viewButton.dataset.id
+        );
+
+      await viewTask(taskId);
+    }
+  }
+);
 
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const filter =
       button.dataset.filter;
+
+    currentFilter = filter;
 
     filterButtons.forEach((btn) => {
       btn.classList.remove("active");
@@ -245,38 +337,6 @@ filterButtons.forEach((button) => {
 
     renderTasks(filteredTasks);
   });
-});
-
-
-taskGrid.addEventListener("click", (event) => {
-  const viewButton =
-    event.target.closest(".view-task-btn");
-
-  if (!viewButton) return;
-
-  const taskId =
-    Number(viewButton.dataset.id);
-
-  const task =
-    tasks.find((task) => task.id === taskId);
-
-  if (!task) return;
-
-  modalBody.innerHTML = `
-    <span class="task-number">
-      TASK ${task.id}
-    </span>
-
-    <h2>${task.title}</h2>
-
-    <p>${task.details}</p>
-
-    <span class="task-status">
-      ${formatStatus(task.status)}
-    </span>
-  `;
-
-  modal.classList.add("show");
 });
 
 
@@ -354,4 +414,4 @@ technologyButtons.forEach((button) => {
 });
 
 
-renderTasks(tasks);
+loadTasks();

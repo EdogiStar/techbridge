@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "TechBridge Landing Page",
+    "description": "Build a responsive landing page for the TechBridge internship platform.",
+    "status": "completed",
+    "details": "Create a responsive TechBridge landing page using HTML5 and CSS3. Focus on clear structure, responsive layouts and a consistent visual style."
+  },
+  {
+    "id": 2,
+    "title": "TechBridge Programs",
+    "description": "Create a programs page that presents the available TechBridge programs.",
+    "status": "completed",
+    "details": "Create a programs page that presents the available TechBridge programs and their key information."
+  },
+  {
+    "id": 3,
+    "title": "Internship Tasks Experience",
+    "description": "Present the 30-day internship journey and the eight internship tasks.",
+    "status": "completed",
+    "details": "Present the 30-day internship experience and the eight tasks in a clear and easy-to-follow journey."
+  },
+  {
+    "id": 4,
+    "title": "Interactive Internship Task Tracker",
+    "description": "Build an interactive roadmap for the Data Analytics and Web Development tracks.",
+    "status": "completed",
+    "details": "Build an interactive internship roadmap that allows users to switch between the Data Analytics and Web Development tracks."
+  },
+  {
+    "id": 5,
+    "title": "Challenge Hub",
+    "description": "Build a challenge section where interns can explore and filter development challenges.",
+    "status": "completed",
+    "details": "Build the TechBridge Challenge Hub where interns can explore and filter challenges by development track."
+  },
+  {
+    "id": 6,
+    "title": "Intern Dashboard",
+    "description": "Build an interactive dashboard for tracking internship progress and exploring technologies.",
+    "status": "completed",
+    "details": "Build an interactive intern dashboard for tracking tasks, monitoring progress and exploring modern web technologies."
+  },
+  {
+    "id": 7,
+    "title": "Task Management API",
+    "description": "Build a backend API and connect it to the TechBridge intern dashboard.",
+    "status": "in-progress",
+    "details": "Build a Node.js and Express.js REST API that provides internship tasks, supports viewing individual tasks and allows task status updates from the dashboard."
+  },
+  {
+    "id": 8,
+    "title": "Coming Soon",
+    "description": "Details for the final internship task will be added soon.",
+    "status": "not-started",
+    "details": "Details for the final internship task will be provided by TechBridge."
+  }
+]
