@@ -35,6 +35,26 @@ Features
 - Responsive roadmap layout for desktop, tablet, and mobile.
 - Built with HTML5, CSS3, and JavaScript.
 
+## Task 7 — Task Management API
+
+Built a REST API with Node.js and Express.js to manage TechBridge internship tasks and connected it to the dashboard.
+
+### Features
+- Get all tasks and individual tasks
+- Update task status
+- Dynamic API-based task rendering
+- Loading and error states
+- View task details without refresh
+- Mark tasks as completed
+- Dynamic progress tracking and filters
+
+### API
+**Base URL:** https://techbridge-task-api.onrender.com
+
+- `GET /api/tasks`
+- `GET /api/tasks/:id`
+- `PUT /api/tasks/:id`
+
 ## Screenshots
 
 ### Desktop
@@ -67,3 +87,6 @@ Built an interactive intern dashboard with task tracking, progress updates, filt
 
 ### Developer Note
 I presented the eight tasks as a simple vertical journey to make the 30-day progression easy to follow. I chose this layout for clarity and consistency with the existing TechBridge platform. I learned more about structuring responsive experiences with HTML5 and CSS3. The main challenge was maintaining consistency across different screen sizes.
+I connected the dashboard to an Express.js REST API and replaced hardcoded task data with backend data. This helped me understand API integration, asynchronous requests, status updates, and frontend-backend communication.
+
+
