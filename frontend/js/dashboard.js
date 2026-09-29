@@ -1,9 +1,15 @@
-const API_URL = "https://techbridge-task-api.onrender.com/api/tasks";
+const API_URL =
+  "https://techbridge-task-api.onrender.com/api/tasks";
 
 let tasks = [];
 let currentFilter = "all";
+let currentSearch = "";
 
-const taskGrid = document.getElementById("task-grid");
+const taskGrid =
+  document.getElementById("task-grid");
+
+const totalTasksElement =
+  document.getElementById("total-tasks");
 
 const completedTasksElement =
   document.getElementById("completed-tasks");
@@ -16,6 +22,9 @@ const progressPercentageElement =
 
 const progressBar =
   document.getElementById("progress-bar");
+
+const taskSearch =
+  document.getElementById("task-search");
 
 const filterButtons =
   document.querySelectorAll(".filter-btn");
@@ -36,6 +45,10 @@ const technologyContent =
   document.getElementById("technology-content");
 
 
+/* =========================
+   STATUS
+========================= */
+
 function formatStatus(status) {
   const statusNames = {
     completed: "Completed",
@@ -47,12 +60,17 @@ function formatStatus(status) {
 }
 
 
+/* =========================
+   PROGRESS
+========================= */
+
 function updateProgress() {
   const totalTasks = tasks.length;
 
-  const completedTasks = tasks.filter(
-    (task) => task.status === "completed"
-  ).length;
+  const completedTasks =
+    tasks.filter(
+      (task) => task.status === "completed"
+    ).length;
 
   const remainingTasks =
     totalTasks - completedTasks;
@@ -63,6 +81,9 @@ function updateProgress() {
       : Math.round(
           (completedTasks / totalTasks) * 100
         );
+
+  totalTasksElement.textContent =
+    totalTasks;
 
   completedTasksElement.textContent =
     completedTasks;
@@ -78,14 +99,60 @@ function updateProgress() {
 }
 
 
+/* =========================
+   FILTER + SEARCH
+========================= */
+
+function getFilteredTasks() {
+  let filteredTasks = [...tasks];
+
+  if (currentFilter !== "all") {
+    filteredTasks =
+      filteredTasks.filter(
+        (task) =>
+          task.status === currentFilter
+      );
+  }
+
+  if (currentSearch.trim() !== "") {
+    const searchTerm =
+      currentSearch
+        .trim()
+        .toLowerCase();
+
+    filteredTasks =
+      filteredTasks.filter((task) => {
+        const searchableText = `
+          ${task.title}
+          ${task.description}
+          ${task.details}
+        `.toLowerCase();
+
+        return searchableText.includes(
+          searchTerm
+        );
+      });
+  }
+
+  return filteredTasks;
+}
+
+
+/* =========================
+   TASK RENDERING
+========================= */
+
 function renderTasks(taskList) {
   taskGrid.innerHTML = "";
 
   if (taskList.length === 0) {
     taskGrid.innerHTML = `
-      <p class="task-message">
-        No tasks found.
-      </p>
+      <div class="task-message">
+        <strong>No matching results found.</strong>
+        <p>
+          Try another search term or change the filter.
+        </p>
+      </div>
     `;
 
     updateProgress();
@@ -101,6 +168,7 @@ function renderTasks(taskList) {
 
     taskCard.innerHTML = `
       <div class="task-card-header">
+
         <span class="task-number">
           TASK ${task.id}
         </span>
@@ -108,6 +176,7 @@ function renderTasks(taskList) {
         <span class="task-status">
           ${formatStatus(task.status)}
         </span>
+
       </div>
 
       <h3>${task.title}</h3>
@@ -123,18 +192,32 @@ function renderTasks(taskList) {
           View Task
         </button>
 
-        ${
-          task.status !== "completed"
-            ? `
-              <button
-                class="complete-task-btn"
-                data-id="${task.id}"
-              >
-                Mark as Completed
-              </button>
-            `
-            : ""
-        }
+        <select
+          class="status-select"
+          data-id="${task.id}"
+          aria-label="Change status for ${task.title}"
+        >
+          <option
+            value="not-started"
+            ${task.status === "not-started" ? "selected" : ""}
+          >
+            Not Started
+          </option>
+
+          <option
+            value="in-progress"
+            ${task.status === "in-progress" ? "selected" : ""}
+          >
+            In Progress
+          </option>
+
+          <option
+            value="completed"
+            ${task.status === "completed" ? "selected" : ""}
+          >
+            Completed
+          </option>
+        </select>
 
       </div>
     `;
@@ -146,24 +229,49 @@ function renderTasks(taskList) {
 }
 
 
+/* =========================
+   LOADING / ERROR
+========================= */
+
 function showLoading() {
   taskGrid.innerHTML = `
-    <p class="task-message">
+    <div class="task-message">
       Loading tasks...
-    </p>
+    </div>
   `;
 }
 
 
 function showError() {
   taskGrid.innerHTML = `
-    <p class="task-message">
-      Unable to load tasks.<br>
-      Please check your connection or try again.
-    </p>
+    <div class="task-message">
+      <strong>Unable to load tasks.</strong>
+      <p>
+        Please check your connection and try again.
+      </p>
+
+      <button
+        class="retry-task-btn"
+        id="retry-task-btn"
+      >
+        Try Again
+      </button>
+    </div>
   `;
+
+  const retryButton =
+    document.getElementById("retry-task-btn");
+
+  retryButton.addEventListener(
+    "click",
+    loadTasks
+  );
 }
 
+
+/* =========================
+   LOAD TASKS
+========================= */
 
 async function loadTasks() {
   showLoading();
@@ -173,12 +281,16 @@ async function loadTasks() {
       await fetch(API_URL);
 
     if (!response.ok) {
-      throw new Error("Failed to load tasks");
+      throw new Error(
+        "Failed to load tasks"
+      );
     }
 
     tasks = await response.json();
 
-    renderTasks(tasks);
+    renderTasks(
+      getFilteredTasks()
+    );
 
   } catch (error) {
     console.error(error);
@@ -187,18 +299,34 @@ async function loadTasks() {
 }
 
 
-async function completeTask(taskId) {
+/* =========================
+   UPDATE TASK STATUS
+========================= */
+
+async function updateTaskStatus(
+  taskId,
+  status,
+  selectElement
+) {
+  selectElement.disabled = true;
+
   try {
     const response =
-      await fetch(`${API_URL}/${taskId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          status: "completed"
-        })
-      });
+      await fetch(
+        `${API_URL}/${taskId}`,
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            status
+          })
+        }
+      );
 
     if (!response.ok) {
       throw new Error(
@@ -211,20 +339,17 @@ async function completeTask(taskId) {
 
     const taskIndex =
       tasks.findIndex(
-        (task) => task.id === taskId
+        (task) =>
+          task.id === taskId
       );
 
     if (taskIndex !== -1) {
-      tasks[taskIndex] = updatedTask;
+      tasks[taskIndex] =
+        updatedTask;
     }
 
     renderTasks(
-      currentFilter === "all"
-        ? tasks
-        : tasks.filter(
-            (task) =>
-              task.status === currentFilter
-          )
+      getFilteredTasks()
     );
 
   } catch (error) {
@@ -233,14 +358,24 @@ async function completeTask(taskId) {
     alert(
       "Unable to update task. Please try again."
     );
+
+    renderTasks(
+      getFilteredTasks()
+    );
   }
 }
 
 
+/* =========================
+   VIEW TASK
+========================= */
+
 async function viewTask(taskId) {
   try {
     const response =
-      await fetch(`${API_URL}/${taskId}`);
+      await fetch(
+        `${API_URL}/${taskId}`
+      );
 
     if (!response.ok) {
       throw new Error(
@@ -277,23 +412,13 @@ async function viewTask(taskId) {
 }
 
 
+/* =========================
+   TASK EVENTS
+========================= */
+
 taskGrid.addEventListener(
   "click",
   async (event) => {
-    const completeButton =
-      event.target.closest(
-        ".complete-task-btn"
-      );
-
-    if (completeButton) {
-      const taskId =
-        Number(
-          completeButton.dataset.id
-        );
-
-      await completeTask(taskId);
-      return;
-    }
 
     const viewButton =
       event.target.closest(
@@ -312,106 +437,215 @@ taskGrid.addEventListener(
 );
 
 
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const filter =
-      button.dataset.filter;
+taskGrid.addEventListener(
+  "change",
+  async (event) => {
 
-    currentFilter = filter;
+    const statusSelect =
+      event.target.closest(
+        ".status-select"
+      );
 
-    filterButtons.forEach((btn) => {
-      btn.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    if (filter === "all") {
-      renderTasks(tasks);
+    if (!statusSelect) {
       return;
     }
 
-    const filteredTasks =
-      tasks.filter(
-        (task) => task.status === filter
+    const taskId =
+      Number(
+        statusSelect.dataset.id
       );
 
-    renderTasks(filteredTasks);
-  });
-});
+    const status =
+      statusSelect.value;
 
-
-modalClose.addEventListener("click", () => {
-  modal.classList.remove("show");
-});
-
-
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    modal.classList.remove("show");
+    await updateTaskStatus(
+      taskId,
+      status,
+      statusSelect
+    );
   }
-});
+);
 
+
+/* =========================
+   FILTER EVENTS
+========================= */
+
+filterButtons.forEach(
+  (button) => {
+    button.addEventListener(
+      "click",
+      () => {
+
+        currentFilter =
+          button.dataset.filter;
+
+        filterButtons.forEach(
+          (btn) => {
+            btn.classList.remove(
+              "active"
+            );
+          }
+        );
+
+        button.classList.add(
+          "active"
+        );
+
+        renderTasks(
+          getFilteredTasks()
+        );
+      }
+    );
+  }
+);
+
+
+/* =========================
+   SEARCH
+========================= */
+
+taskSearch.addEventListener(
+  "input",
+  () => {
+    currentSearch =
+      taskSearch.value;
+
+    renderTasks(
+      getFilteredTasks()
+    );
+  }
+);
+
+
+/* =========================
+   MODAL
+========================= */
+
+modalClose.addEventListener(
+  "click",
+  () => {
+    modal.classList.remove(
+      "show"
+    );
+  }
+);
+
+
+modal.addEventListener(
+  "click",
+  (event) => {
+    if (
+      event.target === modal
+    ) {
+      modal.classList.remove(
+        "show"
+      );
+    }
+  }
+);
+
+
+/* =========================
+   TECHNOLOGIES
+========================= */
 
 const technologies = {
+
   nextjs: {
     title: "Next.js",
+
     description:
       "Next.js is a React framework used to build modern, fast and scalable web applications.",
+
     usage:
       "It is commonly used for websites, dashboards, e-commerce platforms and full-stack applications."
   },
 
   vue: {
     title: "Vue.js",
+
     description:
       "Vue.js is a progressive JavaScript framework for building user interfaces and web applications.",
+
     usage:
       "Developers commonly use Vue.js to create interactive single-page applications and user interfaces."
   },
 
   angular: {
     title: "Angular",
+
     description:
       "Angular is a TypeScript-based framework for building structured and scalable web applications.",
+
     usage:
       "It is commonly used for large-scale applications, enterprise platforms and complex dashboards."
   },
 
   backend: {
     title: "Backend Development",
+
     description:
       "Backend development focuses on server-side logic, APIs, databases and business rules.",
+
     usage:
       "Technologies such as Node.js, Express.js and Laravel connect the frontend to databases and provide the services an application needs."
   }
+
 };
 
 
-technologyButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const technology =
-      button.dataset.tech;
+technologyButtons.forEach(
+  (button) => {
 
-    const information =
-      technologies[technology];
+    button.addEventListener(
+      "click",
+      () => {
 
-    if (!information) return;
+        const technology =
+          button.dataset.tech;
 
-    technologyButtons.forEach((btn) => {
-      btn.classList.remove("active");
-    });
+        const information =
+          technologies[technology];
 
-    button.classList.add("active");
+        if (!information) {
+          return;
+        }
 
-    technologyContent.innerHTML = `
-      <h3>${information.title}</h3>
+        technologyButtons.forEach(
+          (btn) => {
+            btn.classList.remove(
+              "active"
+            );
+          }
+        );
 
-      <p>${information.description}</p>
+        button.classList.add(
+          "active"
+        );
 
-      <p>${information.usage}</p>
-    `;
-  });
-});
+        technologyContent.innerHTML = `
+          <h3>
+            ${information.title}
+          </h3>
 
+          <p>
+            ${information.description}
+          </p>
+
+          <p>
+            ${information.usage}
+          </p>
+        `;
+      }
+    );
+
+  }
+);
+
+
+/* =========================
+   START DASHBOARD
+========================= */
 
 loadTasks();

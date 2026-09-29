@@ -45,14 +45,14 @@
     "id": 7,
     "title": "Task Management API",
     "description": "Build a backend API and connect it to the TechBridge intern dashboard.",
-    "status": "in-progress",
+    "status": "completed",
     "details": "Build a Node.js and Express.js REST API that provides internship tasks, supports viewing individual tasks and allows task status updates from the dashboard."
   },
   {
-    "id": 8,
-    "title": "Coming Soon",
-    "description": "Details for the final internship task will be added soon.",
-    "status": "not-started",
-    "details": "Details for the final internship task will be provided by TechBridge."
-  }
+  "id": 8,
+  "title": "TechBridge Final Web Project & Deployment",
+  "description": "Integrate the TechBridge dashboard, Challenge Hub, task management API and responsive web experience into a complete internship platform.",
+  "status": "in-progress",
+  "details": "Build and deploy the final TechBridge Intern Management Platform by integrating the Challenge Hub, Intern Dashboard, Task Management API, interactive features, responsive design, loading and error states, search, and professional UI."
+}
 ]
