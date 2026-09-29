@@ -1,61 +1,86 @@
-# TechBridge
 
-TechBridge is a modern landing page for a practical technology learning and internship platform focused on helping beginners gain real-world experience through hands-on learning.
+# TechBridge Intern Management Platform
 
-## ✨ Features
+TechBridge is a practical learning and internship platform that helps beginners build real-world digital skills through hands-on projects, challenges, and internship tasks.
 
-- Responsive modern design
-- Mobile navigation
-- Programs and internship sections
-- How It Works section
-- Application CTA
-- Contact section
-- Scroll-reveal animations
-- Accessible navigation and buttons
-- TechBridge brand identity and logo
+## 🚀 Features
+
+- Responsive TechBridge landing page
+- Intern Dashboard
+- Dynamic task management
+- Task search and status filtering
+- Task status updates through REST API
+- Dynamic progress tracking
+- View task details without page refresh
+- Challenge Hub with search and filtering
+- Data Analytics and Web Development challenges
+- Interactive internship roadmaps
+- Loading and error states
+- Responsive desktop, tablet, and mobile design
+- Professional and accessible UI
 
 ## 🛠️ Built With
 
 - HTML5
 - CSS3
 - JavaScript
+- Node.js
+- Express.js
+- REST API
+- JSON
 - Lucide Icons
 
-## 🎯 Purpose
-Built to present TechBridge's practical learning and internship opportunities through a clean, professional, and responsive web experience.
+## 📁 Project Structure
 
-## Task 4 — Interactive Internship Roadmap
+techbridge/
+├── frontend/
+│   ├── index.html
+│   ├── dashboard.html
+│   ├── challenges.html
+│   ├── programs.html
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── dashboard.js
+│   │   └── script.js
+│   ├── images/
+│   └── tasks/
+├── backend/
+│   ├── server.js
+│   └── data/
+│       └── tasks.json
+├── screenshots/
+└── README.md
 
-An interactive 30-day internship roadmap for the TechBridge Data Analytics and Web Development tracks.
+## 🔗 API
 
-Features
+Base URL: https://techbridge-task-api.onrender.com
 
-- Switch between both internship tracks without page refresh.
-- Displays all 8 tasks with day, description, and difficulty.
-- Responsive roadmap layout for desktop, tablet, and mobile.
-- Built with HTML5, CSS3, and JavaScript.
+### Endpoints
 
-## Task 7 — Task Management API
+GET  /api/tasks
+GET  /api/tasks/:id
+PUT  /api/tasks/:id
 
-Built a REST API with Node.js and Express.js to manage TechBridge internship tasks and connected it to the dashboard.
+The dashboard fetches internship tasks from the Express API instead of using hardcoded task data.
 
-### Features
-- Get all tasks and individual tasks
-- Update task status
-- Dynamic API-based task rendering
-- Loading and error states
-- View task details without refresh
-- Mark tasks as completed
-- Dynamic progress tracking and filters
+### ▶️ Run Locally
 
-### API
-**Base URL:** https://techbridge-task-api.onrender.com
+Frontend
 
-- `GET /api/tasks`
-- `GET /api/tasks/:id`
-- `PUT /api/tasks/:id`
+Open the "frontend" folder with Live Server.
 
-## Screenshots
+Backend
+
+cd backend
+npm install
+node server.js
+
+The API runs on:
+
+http://localhost:3000
+
+📸 ## Screenshots
 
 ### Desktop
 ![TechBridge Desktop](./screenshots/desktop.png)
@@ -76,17 +101,26 @@ Built a REST API with Node.js and Express.js to manage TechBridge internship tas
 ### Dashboard 
 ![Dashboard](./screenshots/dashboard.png)
 
-##### Roadmap
-I built the roadmap to make the 30-day internship journey easy to follow. JavaScript lets users switch between the two tracks without refreshing the page. I used arrays, objects, functions, events, and DOM manipulation. I also made the layout responsive for different screen sizes. This task helped me get more comfortable building interactive interfaces with JavaScript.
 
-##### Challenge Hub
-I built an interactive Challenge Hub with JavaScript filtering, search, and challenge details. This improved my understanding of DOM manipulation and responsive UI design.
+### 🧠 What I Learned
 
-##### Dashboard 
-Built an interactive intern dashboard with task tracking, progress updates, filters, task details, challenge navigation, and a technology explorer. I improved my understanding of JavaScript DOM manipulation, events, dynamic content, and responsive UI design.
+This project helped me strengthen my understanding of:
 
-### Developer Note
-I presented the eight tasks as a simple vertical journey to make the 30-day progression easy to follow. I chose this layout for clarity and consistency with the existing TechBridge platform. I learned more about structuring responsive experiences with HTML5 and CSS3. The main challenge was maintaining consistency across different screen sizes.
-I connected the dashboard to an Express.js REST API and replaced hardcoded task data with backend data. This helped me understand API integration, asynchronous requests, status updates, and frontend-backend communication.
+- JavaScript DOM manipulation
+- API integration
+- Asynchronous JavaScript and "fetch()"
+- REST API development with Express.js
+- Dynamic task rendering
+- Search and filtering
+- Frontend-backend communication
+- Responsive web design
+- Loading and error handling
+- Building and integrating multiple project features
 
+### 🎯 Final Project
 
+Task 8 brings the previous TechBridge internship tasks together into one complete Intern Management Platform, combining the landing page, Challenge Hub, internship dashboard, task management API, interactive features, and responsive design.
+
+## 👨‍💻 Developer (Isah Muhammad)
+
+Built as part of the TechBridge Web Development Internship Program.
